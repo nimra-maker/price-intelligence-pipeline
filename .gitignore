@@ -3,3 +3,4 @@ venv/
 data/raw/
 __pycache__/
 *.db
+!data/processed/prices.db
