@@ -3,6 +3,7 @@ import json
 import os
 import re
 import sqlite3
+import sys
 from datetime import date
 from pathlib import Path
 
@@ -131,9 +132,10 @@ def main():
     summary = generate_summary(facts)
     flagged = unverified_numbers(summary, facts)
     path = save_report(summary, flagged)
+
+    if "--json" in sys.argv:  # used by n8n
+        print(json.dumps({"summary": summary, "flagged": flagged, "report_path": str(path)}))
+        return
+
     print("Report saved:", path)
     print("Unverified numbers:", flagged if flagged else "none")
-
-
-if __name__ == "__main__":
-    main()
