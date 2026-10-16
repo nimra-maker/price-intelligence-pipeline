@@ -1,9 +1,9 @@
-"""Pricing report: SQL facts -> LLM summary -> number check -> saved report."""
+"""Pricing report: SQL facts -> LLM summary -> number check -> saved report -> email."""
+import html
 import json
 import os
 import re
 import sqlite3
-import sys
 from datetime import date
 from pathlib import Path
 
@@ -53,7 +53,7 @@ def get_facts():
 
 def generate_summary(facts):
     if not API_KEY or not MODEL:
-        raise RuntimeError("Set GROQ_API_KEY and GROQ_MODEL in your .env file")
+        raise RuntimeError("Set GROQ_API_KEY and GROQ_MODEL")
     system_msg = (
         "You are a retail pricing analyst. Use ONLY the numbers in the data provided. "
         "Do not invent figures, causes or trends over time. The data is a single price snapshot."
@@ -127,15 +127,44 @@ def save_report(summary, flagged):
     return path
 
 
+def send_email(summary, flagged):
+    api_key = os.getenv("BREVO_API_KEY")
+    sender = os.getenv("EMAIL_SENDER")
+    recipient = os.getenv("EMAIL_RECIPIENT")
+    if not (api_key and sender and recipient):
+        print("Email skipped: set BREVO_API_KEY, EMAIL_SENDER, EMAIL_RECIPIENT")
+        return
+
+    prefix = "[CHECK NUMBERS] " if flagged else ""
+    body = html.escape(summary).replace("\n", "<br>")
+    if flagged:
+        body += "<br><br><i>Numbers not found in the SQL results: " + html.escape(", ".join(flagged)) + "</i>"
+
+    resp = requests.post(
+        "https://api.brevo.com/v3/smtp/email",
+        headers={"api-key": api_key, "accept": "application/json", "content-type": "application/json"},
+        json={
+            "sender": {"name": "Pricing Pipeline", "email": sender},
+            "to": [{"email": recipient}],
+            "subject": f"{prefix}Weekly pricing report - {date.today():%d %b %Y}",
+            "htmlContent": f"<html><body>{body}</body></html>",
+        },
+        timeout=30,
+    )
+    if resp.status_code >= 300:
+        raise RuntimeError(f"Brevo error: {resp.status_code} {resp.text}")
+    print("Email sent to", recipient)
+
+
 def main():
     facts = get_facts()
     summary = generate_summary(facts)
     flagged = unverified_numbers(summary, facts)
     path = save_report(summary, flagged)
-
-    if "--json" in sys.argv:  # used by n8n
-        print(json.dumps({"summary": summary, "flagged": flagged, "report_path": str(path)}))
-        return
-
     print("Report saved:", path)
     print("Unverified numbers:", flagged if flagged else "none")
+    send_email(summary, flagged)
+
+
+if __name__ == "__main__":
+    main()
