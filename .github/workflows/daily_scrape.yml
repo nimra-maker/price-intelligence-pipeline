@@ -1,0 +1,33 @@
+name: Daily price snapshot
+
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Scrape prices
+        run: python src/scrape.py
+
+      - name: Save updated database to the repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/processed/prices.db
+          git diff --staged --quiet || git commit -m "Daily price snapshot $(date -u +%F)"
+          git push
