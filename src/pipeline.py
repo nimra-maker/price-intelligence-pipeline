@@ -1,10 +1,10 @@
-"""Pricing report: SQL facts -> LLM summary -> number check -> saved report -> email."""
+"""Weekly Sowears price-change report: SQL facts -> LLM summary -> number check -> report -> email."""
 import html
 import json
 import os
 import re
 import sqlite3
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import pandas as pd
@@ -12,41 +12,96 @@ import requests
 from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parents[1]
-DB_PATH = ROOT / "data" / "processed" / "prices.db"
-REPORTS_DIR = ROOT / "reports"
-
 load_dotenv(ROOT / ".env")
+DB_PATH = Path(os.getenv("PRICES_DB") or ROOT / "data" / "processed" / "prices.db")
+REPORTS_DIR = ROOT / "reports"
 API_KEY = os.getenv("GROQ_API_KEY")
 MODEL = os.getenv("GROQ_MODEL")
 
-QUERIES = {
-    "overall": """
-        SELECT COUNT(*) AS total_products,
-               SUM(discount_pct > 0) AS discounted_products,
-               ROUND(100.0 * SUM(discount_pct > 0) / COUNT(*), 1) AS pct_discounted,
-               ROUND(AVG(CASE WHEN discount_pct > 0 THEN discount_pct END), 1) AS avg_discount_when_discounted
-        FROM price_snapshots;""",
-    "categories": """
-        SELECT p.category, COUNT(*) AS products,
-               ROUND(100.0 * SUM(s.discount_pct > 0) / COUNT(*), 1) AS pct_discounted,
-               ROUND(AVG(CASE WHEN s.discount_pct > 0 THEN s.discount_pct END), 1) AS avg_discount_when_discounted
-        FROM products p JOIN price_snapshots s USING (product_id)
-        GROUP BY p.category ORDER BY avg_discount_when_discounted DESC;""",
-    "top_brands": """
-        SELECT p.brand, COUNT(*) AS products, ROUND(AVG(s.discount_pct), 1) AS avg_discount_pct
-        FROM products p JOIN price_snapshots s USING (product_id)
-        GROUP BY p.brand HAVING COUNT(*) >= 20
-        ORDER BY avg_discount_pct DESC LIMIT 10;""",
-}
+CTE = """
+WITH latest AS (SELECT product_id, price, in_stock FROM store_price_snapshots WHERE snapshot_date = :latest),
+     base   AS (SELECT product_id, price, in_stock FROM store_price_snapshots WHERE snapshot_date = :base)
+"""
+
+
+def sql(conn, query, **params):
+    return json.loads(pd.read_sql(query, conn, params=params).to_json(orient="records"))
+
+
+def pick_dates(conn):
+    """Latest snapshot, and a baseline about 7 days earlier (or the oldest one we have)."""
+    dates = [r[0] for r in conn.execute(
+        "SELECT DISTINCT snapshot_date FROM store_price_snapshots ORDER BY snapshot_date")]
+    if not dates:
+        raise RuntimeError("No snapshots in the database yet")
+    latest = dates[-1]
+    if len(dates) == 1:
+        return latest, None
+    target = (date.fromisoformat(latest) - timedelta(days=7)).isoformat()
+    older = [d for d in dates[:-1] if d <= target]
+    return latest, (older[-1] if older else dates[0])
 
 
 def get_facts():
     conn = sqlite3.connect(DB_PATH)
     try:
-        return {
-            name: json.loads(pd.read_sql(sql, conn).to_json(orient="records"))
-            for name, sql in QUERIES.items()
+        latest, base = pick_dates(conn)
+        facts = {
+            "store": "Sowears (Pakistani women's fashion)",
+            "currency": "PKR",
+            "latest_snapshot": latest,
+            "overview": sql(conn, """
+                SELECT COUNT(*) AS products_tracked,
+                       ROUND(AVG(price)) AS avg_price,
+                       SUM(in_stock = 0) AS sold_out_products
+                FROM store_price_snapshots WHERE snapshot_date = :latest""", latest=latest)[0],
         }
+        if base is None:
+            facts["compared_with"] = None
+            facts["note"] = ("Tracking has only just started: there is a single snapshot, "
+                             "so no price changes can be reported yet.")
+            return facts
+
+        p = {"latest": latest, "base": base}
+        facts["compared_with"] = base
+        facts["days_between_snapshots"] = (date.fromisoformat(latest) - date.fromisoformat(base)).days
+        facts["changes"] = sql(conn, CTE + """
+            SELECT COUNT(*) AS products_compared,
+                   SUM(l.price < b.price) AS price_drops,
+                   SUM(l.price > b.price) AS price_rises,
+                   SUM(l.price = b.price) AS unchanged
+            FROM latest l JOIN base b ON b.product_id = l.product_id""", **p)[0]
+        facts["biggest_drops"] = sql(conn, CTE + """
+            SELECT p.title, p.product_type, b.price AS old_price, l.price AS new_price,
+                   ROUND(100.0 * (l.price - b.price) / b.price, 1) AS change_pct
+            FROM latest l JOIN base b ON b.product_id = l.product_id
+                          JOIN store_products p ON p.product_id = l.product_id
+            WHERE l.price < b.price ORDER BY change_pct ASC LIMIT 8""", **p)
+        facts["biggest_rises"] = sql(conn, CTE + """
+            SELECT p.title, p.product_type, b.price AS old_price, l.price AS new_price,
+                   ROUND(100.0 * (l.price - b.price) / b.price, 1) AS change_pct
+            FROM latest l JOIN base b ON b.product_id = l.product_id
+                          JOIN store_products p ON p.product_id = l.product_id
+            WHERE l.price > b.price ORDER BY change_pct DESC LIMIT 5""", **p)
+        facts["changes_by_category"] = sql(conn, CTE + """
+            SELECT p.product_type, COUNT(*) AS products_compared,
+                   SUM(l.price < b.price) AS drops, SUM(l.price > b.price) AS rises
+            FROM latest l JOIN base b ON b.product_id = l.product_id
+                          JOIN store_products p ON p.product_id = l.product_id
+            GROUP BY p.product_type
+            HAVING SUM(l.price <> b.price) > 0
+            ORDER BY SUM(l.price <> b.price) DESC LIMIT 6""", **p)
+        facts["new_products"] = sql(conn, CTE + """
+            SELECT COUNT(*) AS count FROM latest
+            WHERE product_id NOT IN (SELECT product_id FROM base)""", **p)[0]
+        facts["new_product_examples"] = sql(conn, CTE + """
+            SELECT p.title, p.product_type, l.price
+            FROM latest l JOIN store_products p ON p.product_id = l.product_id
+            WHERE l.product_id NOT IN (SELECT product_id FROM base) LIMIT 5""", **p)
+        facts["removed_products"] = sql(conn, CTE + """
+            SELECT COUNT(*) AS count FROM base
+            WHERE product_id NOT IN (SELECT product_id FROM latest)""", **p)[0]
+        return facts
     finally:
         conn.close()
 
@@ -56,11 +111,14 @@ def generate_summary(facts):
         raise RuntimeError("Set GROQ_API_KEY and GROQ_MODEL")
     system_msg = (
         "You are a retail pricing analyst. Use ONLY the numbers in the data provided. "
-        "Do not invent figures, causes or trends over time. The data is a single price snapshot."
+        "Do not invent figures or causes. Prices are in PKR. The crossed-out 'was' price is "
+        "not used here; only talk about price changes between the two snapshot dates. "
+        "If compared_with is null, say tracking has just begun and briefly describe the "
+        "current catalog instead of inventing changes."
     )
     user_msg = (
-        "Write a 5-sentence summary for a business manager, then 2 recommendations. "
-        f"Data (JSON): {json.dumps(facts)}"
+        "Write a 5-sentence summary of the price movements for a business manager, "
+        f"then 2 recommendations. Data (JSON): {json.dumps(facts)}"
     )
     resp = requests.post(
         "https://api.groq.com/openai/v1/chat/completions",
@@ -91,7 +149,12 @@ def flatten_numbers(obj):
         for v in obj:
             yield from flatten_numbers(v)
     elif isinstance(obj, (int, float)):
-        yield float(obj)
+        yield abs(float(obj))
+    elif isinstance(obj, str):  # dates and product names contain numbers too
+        for m in NUM_RE.findall(obj):
+            t = m.rstrip(".,").replace(",", "")
+            if t:
+                yield float(t)
 
 
 def unverified_numbers(summary, facts):
@@ -121,7 +184,7 @@ def save_report(summary, flagged):
     else:
         status = "All numbers in this summary matched the SQL results."
     path.write_text(
-        f"# Pricing report - {date.today():%d %b %Y}\n\n{summary}\n\n---\n*Verification: {status}*\n",
+        f"# Sowears price report - {date.today():%d %b %Y}\n\n{summary}\n\n---\n*Verification: {status}*\n",
         encoding="utf-8",
     )
     return path
@@ -146,7 +209,7 @@ def send_email(summary, flagged):
         json={
             "sender": {"name": "Pricing Pipeline", "email": sender},
             "to": [{"email": recipient}],
-            "subject": f"{prefix}Weekly pricing report - {date.today():%d %b %Y}",
+            "subject": f"{prefix}Weekly Sowears price report - {date.today():%d %b %Y}",
             "htmlContent": f"<html><body>{body}</body></html>",
         },
         timeout=30,
