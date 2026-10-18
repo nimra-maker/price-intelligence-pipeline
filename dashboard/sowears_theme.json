@@ -1,0 +1,16 @@
+{
+  "name": "Sowears Rose Plum",
+  "dataColors": ["#5B2A4E", "#C9748F", "#D9A5B3", "#8E5A7E", "#B8956A", "#7A6F6C", "#3F8F6B", "#E8C9A0"],
+  "background": "#FFFFFF",
+  "foreground": "#2B2B2B",
+  "tableAccent": "#5B2A4E",
+  "good": "#3F8F6B",
+  "neutral": "#C9748F",
+  "bad": "#C0504D",
+  "textClasses": {
+    "callout": {"fontSize": 28, "fontFace": "Segoe UI Semibold", "color": "#5B2A4E"},
+    "title": {"fontSize": 14, "fontFace": "Segoe UI Semibold", "color": "#5B2A4E"},
+    "header": {"fontSize": 12, "fontFace": "Segoe UI Semibold", "color": "#5B2A4E"},
+    "label": {"fontSize": 11, "fontFace": "Segoe UI", "color": "#7A6F6C"}
+  }
+}
