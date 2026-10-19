@@ -24,10 +24,13 @@ jobs:
       - name: Scrape prices
         run: python src/scrape.py
 
-      - name: Save updated database to the repo
+      - name: Export CSVs for Power BI
+        run: python src/export_csv.py
+
+      - name: Save updated data to the repo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/processed/prices.db
+          git add data/processed/prices.db data/export
           git diff --staged --quiet || git commit -m "Daily price snapshot $(date -u +%F)"
           git push
