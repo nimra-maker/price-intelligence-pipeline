@@ -1,7 +1,9 @@
 ﻿snapshot_date,product_id,title,product_type,event
 2026-11-02,7724463227088,Nova Black Embroidered Dress,Uncategorized,Sold out
 2026-11-06,7724463227088,Nova Black Embroidered Dress,Uncategorized,Back in stock
+2026-11-07,7724463227088,Nova Black Embroidered Dress,Uncategorized,Sold out
 2026-10-27,7724466798800,Mini Nova Black Embroidered Dress,Baby & Toddler Dresses,Sold out
+2026-11-07,7724466798800,Mini Nova Black Embroidered Dress,Baby & Toddler Dresses,Back in stock
 2026-10-20,7868587278544,Black Textured Dress,Dresses,Sold out
 2026-10-30,7972231708880,Hope Velvet Dress - Beige,Dresses,Sold out
 2026-10-21,7976386560208,Promise - Dusty Pink Velvet Dress with Long Sleeves (Pleated),Dresses,Back in stock
@@ -74,6 +76,7 @@
 2026-11-05,8335710912720,Blush Printed Scarf,Apparel & Accessories,Sold out
 2026-10-24,8335712551120,Cigar Panel Black Long Dress,Dresses,Back in stock
 2026-10-30,8335712551120,Cigar Panel Black Long Dress,Dresses,Sold out
+2026-11-07,8336574709968,Evaleen Black Panel Net Dress,Dresses,Sold out
 2026-10-18,8337621254352,Limelette Lace Long Dress,Dresses,Sold out
 2026-10-22,8338789368016,Clovy Crochet Skirt,Outfit Sets,Sold out
 2026-10-28,8338789368016,Clovy Crochet Skirt,Outfit Sets,Back in stock
@@ -84,13 +87,16 @@
 2026-10-21,8342697738448,Florentis 3D Birdie Co Ord Set,Outfit Sets,Sold out
 2026-10-26,8342697738448,Florentis 3D Birdie Co Ord Set,Outfit Sets,Back in stock
 2026-11-02,8342697738448,Florentis 3D Birdie Co Ord Set,Outfit Sets,Sold out
+2026-11-07,8342698459344,Elysian Floral Printed Dress,Dresses,Back in stock
 2026-10-21,8344077205712,Flara Beige Button Down Shirt,Dresses,Sold out
 2026-10-28,8344077205712,Flara Beige Button Down Shirt,Dresses,Back in stock
 2026-10-30,8344077205712,Flara Beige Button Down Shirt,Dresses,Sold out
 2026-10-24,8344446894288,Auburn Brown Cutwork Shirt,Dresses,Back in stock
+2026-11-07,8344446894288,Auburn Brown Cutwork Shirt,Dresses,Sold out
 2026-10-30,8344452432080,Anna Blue Chiffon Long Dress,Dresses,Sold out
 2026-11-05,8344466686160,Signora Blue And Cream Softstreme Sweat Pants,Pants,Back in stock
 2026-11-06,8347019280592,Crimsera Black Long Dress,Dresses,Back in stock
+2026-11-07,8347019280592,Crimsera Black Long Dress,Dresses,Sold out
 2026-10-21,8347218772176,Caffra Black Jersey Long Dress,Dresses,Back in stock
 2026-10-24,8347218772176,Caffra Black Jersey Long Dress,Dresses,Sold out
 2026-10-28,8347218772176,Caffra Black Jersey Long Dress,Dresses,Back in stock
@@ -140,6 +146,7 @@
 2026-10-30,8380143927504,Lilbeth Maroon Soft Silk Co Ord Set,Outfit Sets,Sold out
 2026-11-04,8380143927504,Lilbeth Maroon Soft Silk Co Ord Set,Outfit Sets,Back in stock
 2026-11-05,8380143927504,Lilbeth Maroon Soft Silk Co Ord Set,Outfit Sets,Sold out
+2026-11-07,8380143927504,Lilbeth Maroon Soft Silk Co Ord Set,Outfit Sets,Back in stock
 2026-10-28,8380851716304,Caffra Brown Jersey Long Dress,Dresses,Back in stock
 2026-10-30,8380851716304,Caffra Brown Jersey Long Dress,Dresses,Sold out
 2026-10-28,8381759258832,Morvina Black Long Dress,Dresses,Back in stock
@@ -156,6 +163,7 @@
 2026-10-24,8386592833744,Aylin Blue Shirt And Dress,Dresses,Back in stock
 2026-10-25,8386592833744,Aylin Blue Shirt And Dress,Dresses,Sold out
 2026-11-06,8386592833744,Aylin Blue Shirt And Dress,Dresses,Back in stock
+2026-11-07,8386592833744,Aylin Blue Shirt And Dress,Dresses,Sold out
 2026-10-21,8386592899280,Aylin Beige Shirt And Dress,Dresses,Back in stock
 2026-11-02,8386592899280,Aylin Beige Shirt And Dress,Dresses,Sold out
 2026-10-30,8386592964816,Emelith Pastel Blue Cutwork Panel Dress,Dresses,Sold out
@@ -176,6 +184,7 @@
 2026-11-04,8393328754896,Primrose Embroidered Stole,Apparel & Accessories,Sold out
 2026-10-28,8394715693264,Melanie 3D Flower Mauve Long Dress,Dresses,Back in stock
 2026-11-01,8394715693264,Melanie 3D Flower Mauve Long Dress,Dresses,Sold out
+2026-11-07,8394715693264,Melanie 3D Flower Mauve Long Dress,Dresses,Back in stock
 2026-10-29,8394715726032,Juni Desert Soft Silk Dress,Dresses,Sold out
 2026-10-28,8394748723408,Nemy Black Jersey Cotton Dress,Dresses,Back in stock
 2026-10-29,8394748723408,Nemy Black Jersey Cotton Dress,Dresses,Sold out
@@ -192,6 +201,7 @@
 2026-10-28,8400864018640,Leah Black Knot Shirt,Dresses,Back in stock
 2026-10-31,8400864018640,Leah Black Knot Shirt,Dresses,Sold out
 2026-11-05,8400864018640,Leah Black Knot Shirt,Dresses,Back in stock
+2026-11-07,8400864018640,Leah Black Knot Shirt,Dresses,Sold out
 2026-10-31,8403177439440,Zia Stripe Oversized Buttondown Shirt,Dresses,Sold out
 2026-11-03,8403184484560,Stephanie Beige Cowl Soft Silk Shirt,Dresses,Sold out
 2026-11-06,8403184615632,Marrisa Blue Long Dress,Dresses,Sold out
@@ -210,6 +220,7 @@
 2026-10-29,8406265823440,Molly Plum Poplin Long Dress,Dresses,Back in stock
 2026-10-30,8406265823440,Molly Plum Poplin Long Dress,Dresses,Sold out
 2026-11-06,8407741792464,Romina Maroon Cape Long Dress,Dresses,Back in stock
+2026-11-07,8407741792464,Romina Maroon Cape Long Dress,Dresses,Sold out
 2026-10-30,8408288395472,Marble Honey Printed Hijab,Uncategorized,Sold out
 2026-10-24,8409426100432,Jenner Black And White Polka Dots Dress,Dresses,Back in stock
 2026-10-21,8409426133200,Erin Pleated Mauve Dress With Leather Belt,Dresses,Back in stock
@@ -228,6 +239,7 @@
 2026-10-29,8409467257040,Saryn Maroon Pleated Dress With Cape,Dresses,Sold out
 2026-10-19,8409806012624,Black Midi Camisole Inner,Dresses,Sold out
 2026-11-04,8409806012624,Black Midi Camisole Inner,Dresses,Back in stock
+2026-11-07,8410016448720,Riley Green Buckle Long Dress,Dresses,Sold out
 2026-10-26,8410284556496,Mariah Pearl Dress And Stole,Dresses,Back in stock
 2026-10-29,8410284556496,Mariah Pearl Dress And Stole,Dresses,Sold out
 2026-10-19,8411527512272,Nish Black Twist Buckle Shirt,Dresses,Sold out
@@ -249,6 +261,7 @@
 2026-11-05,8412328165584,Khloe Beige Cutwork Long Dress,Dresses,Back in stock
 2026-10-18,8412334096592,Ferisha Light Beige Embellished Cape And Dress,Dresses,Sold out
 2026-10-21,8412334358736,Ferisha Dusky Embellished Cape And Dress,Dresses,Sold out
+2026-11-07,8412532244688,Mysha Pink Mauve Solid Chiffon Long Dress,Dresses,Back in stock
 2026-11-03,8412532408528,Cressida Maroon Pleat Long Dress,Dresses,Sold out
 2026-10-28,8412532506832,Aurafluer Floral Upper / Abaya,Dresses,Back in stock
 2026-11-04,8412532506832,Aurafluer Floral Upper / Abaya,Dresses,Sold out
@@ -263,6 +276,7 @@
 2026-10-28,8416559333584,Amertha Floral Long Dress,Dresses,Back in stock
 2026-11-03,8416559333584,Amertha Floral Long Dress,Dresses,Sold out
 2026-10-18,8418580693200,Orie Black Balloon Skirt,Outfit Sets,Sold out
+2026-11-07,8418580922576,Lilac Lattice Cowl Long Dress,Dresses,Sold out
 2026-10-24,8418580988112,Indigo Whirl Long Dress,Dresses,Back in stock
 2026-10-30,8418580988112,Indigo Whirl Long Dress,Dresses,Sold out
 2026-10-19,8420130521296,Ahvi Brown Long Dress With Buckle Belt,Dresses,Sold out
@@ -308,6 +322,7 @@
 2026-10-19,8443422507216,Petaline Pink Full Sleeves Straight Dress,Dresses,Sold out
 2026-10-21,8443422507216,Petaline Pink Full Sleeves Straight Dress,Dresses,Back in stock
 2026-10-25,8443422507216,Petaline Pink Full Sleeves Straight Dress,Dresses,Sold out
+2026-11-07,8443680587984,Cupidee Lounge Eye Mask,Apparel & Accessories,Sold out
 2026-10-28,8444954804432,Britney Lilac Cutwork Embroidered Dress,Dresses,Back in stock
 2026-10-25,8444954837200,Virello Blue Printed Panel Dress,Dresses,Sold out
 2026-10-30,8446136877264,Aurema Black Floral Long Dress,Dresses,Sold out
@@ -323,11 +338,13 @@
 2026-11-03,8453027332304,Casmee Brown Paisley Long Dress,Dresses,Sold out
 2026-11-05,8453027332304,Casmee Brown Paisley Long Dress,Dresses,Back in stock
 2026-11-06,8453027332304,Casmee Brown Paisley Long Dress,Dresses,Sold out
+2026-11-07,8453027332304,Casmee Brown Paisley Long Dress,Dresses,Back in stock
 2026-11-05,8453030772944,Numis White Drawstring Irish Linen Pants,Pants,Sold out
 2026-10-18,8453930614992,Nuvora Maroon Lace Long Dress,Dresses,Sold out
 2026-10-24,8453930614992,Nuvora Maroon Lace Long Dress,Dresses,Back in stock
 2026-11-05,8453954830544,Aloura Embellished Long Dress,Dresses,Sold out
 2026-11-04,8454323830992,Elinae Stripe Burgundy Long Dress,Dresses,Sold out
+2026-11-07,8454323830992,Elinae Stripe Burgundy Long Dress,Dresses,Back in stock
 2026-10-21,8456130363600,Avena Brown Crochet Long Shirt,Dresses,Back in stock
 2026-10-22,8456130363600,Avena Brown Crochet Long Shirt,Dresses,Sold out
 2026-10-24,8456130363600,Avena Brown Crochet Long Shirt,Dresses,Back in stock
@@ -349,7 +366,9 @@
 2026-11-01,8457102098640,Althea Texture Scallops Shirt,Dresses,Sold out
 2026-10-27,8457251094736,Colette Drape Long Dress,Dresses,Sold out
 2026-10-30,8457251094736,Colette Drape Long Dress,Dresses,Back in stock
+2026-11-07,8457251094736,Colette Drape Long Dress,Dresses,Sold out
 2026-11-05,8457293005008,Breathable Mist Veil Hijab/Stole,Uncategorized,Sold out
+2026-11-07,8457293005008,Breathable Mist Veil Hijab/Stole,Uncategorized,Back in stock
 2026-10-29,8459730026704,Keona Crochet Brown Long Dress,Dresses,Back in stock
 2026-11-05,8461941407952,Lesly Roose Scarf,Apparel & Accessories,Sold out
 2026-11-01,8462401568976,Allysa Plum Textured Knot Shirt,Dresses,Sold out
@@ -366,6 +385,7 @@
 2026-10-31,8470297837776,Sunken Glimmer Earrings,Apparel & Accessories,Sold out
 2026-10-30,8470316089552,Sea Glass Drops Earrings,Apparel & Accessories,Sold out
 2026-10-21,8470316187856,Fable Petal Earrings,Apparel & Accessories,Sold out
+2026-11-07,8473444843728,Verona Golden Bead Necklace,Necklaces,Sold out
 2026-11-02,8473451364560,Emberlynn Printed Shirt,Dresses,Sold out
 2026-11-04,8473451364560,Emberlynn Printed Shirt,Dresses,Back in stock
 2026-11-06,8473451364560,Emberlynn Printed Shirt,Dresses,Sold out
